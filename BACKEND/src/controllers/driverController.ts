@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Driver from "../models/driver.js";
-import { resolveSoa } from "node:dns";
+
 
 // @desc    Get all drivers
 // @route   GET /api/drivers
@@ -12,6 +12,7 @@ export const getDriver = async (
 ): Promise<Response> => {
      try {
         const drivers = await Driver.find().sort({createdAt : -1});
+        
           
         return res.status(200).json({
              success : true,
@@ -127,7 +128,7 @@ export const createDriver = async (
 // @route   PUT /api/drivers/:id
 // @access  Public
 
-export const updateDriver = async (
+export const updatedDriver = async (
      req : Request,
      res : Response
 ): Promise<Response> => {
@@ -151,7 +152,7 @@ export const updateDriver = async (
         return res.status(200).json({
              success : true,
              message : "Driver updated Successfully",
-             updateDriver
+             updatedDriver
         });
 
      } catch (error) {

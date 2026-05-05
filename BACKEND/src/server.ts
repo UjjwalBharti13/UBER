@@ -20,7 +20,7 @@ app.use(express.json());
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/drivers", driverRoutes);
-app.use("api/rides", rideRoutes);
+app.use("/api/rides", rideRoutes);
 
 
 
@@ -55,7 +55,7 @@ app.use((
     err : Error,
     req : Request,
     res : Response,
-    next : NextFunction,
+    next : NextFunction, 
 ) => {
    return res.status(500).json({
         success : false,

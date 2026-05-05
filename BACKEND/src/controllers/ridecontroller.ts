@@ -12,19 +12,23 @@ export const createRide = async (
      res : Response
 ): Promise<Response> => {
      try {
-        const {
-             user_id,
-             driver_id,
-             origin_address,
-             destination_address,
-             origin_latitude,
-             origin_longitude,
-             destination_latitude,
-             destination_longitude,
-             ride_status,
-             fare_price,
-             payment_status,
-        } = req.body();
+       const {
+                user_id,
+                driver_id,
+                origin_address,
+                destination_address,
+                origin_latitude,
+                origin_longitude,
+                destination_latitude,
+                destination_longitude,
+                ride_status,
+                fare_price,
+                payment_status,
+                distance,
+                estimated_arrival_time,
+                otp,
+                schedule_at
+            } = req.body;
 
         // check if user and driver exist
         const user = await User.findById(user_id);
@@ -50,18 +54,22 @@ export const createRide = async (
          // create new ride
 
          const newRide = await Ride.create({
-             user_id,
-             driver_id,
-             origin_address,
-             destination_address,
-             origin_latitude,
-             origin_longitude,
-             destination_latitude,
-             destination_longitude,
-             ride_status,
-             fare_price,
-             payment_status
-         });
+                user_id,
+                driver_id,
+                origin_address,
+                destination_address,
+                origin_latitude,
+                origin_longitude,
+                destination_latitude,
+                destination_longitude,
+                ride_status,
+                fare_price,
+                payment_status,
+                distance,
+                estimated_arrival_time,
+                otp,
+                schedule_at
+            });
 
          return res.status(201).json({
              success : true,
@@ -204,7 +212,7 @@ export const updateRide = async(
              }
          }
 
-         const updateRide = await Ride.findByIdAndUpdate(
+         const updatedRide = await Ride.findByIdAndUpdate(
                req.params.id,
                req.body,
                {
@@ -218,7 +226,7 @@ export const updateRide = async(
            return res.status(200).json({
              success : true,
                 message : "Ride updated successfully",
-                updateRide
+                updatedRide
            });
 
     } catch (error) {

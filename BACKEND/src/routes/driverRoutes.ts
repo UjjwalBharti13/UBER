@@ -5,7 +5,7 @@ import{
      getDriver,
      getDriverById,
      createDriver,
-     updateDriver,
+     updatedDriver,
      deleteDriver,
 }from "../controllers/driverController.js";
 
@@ -20,7 +20,7 @@ router.get("/:id", getDriverById);
 router.post("/", createDriver);
 
 // UPDATE DRIVER
-router.put("/:id", updateDriver);
+router.put("/:id", updatedDriver);
 
 // DELETE DRIVER
 router.delete("/:id", deleteDriver);
