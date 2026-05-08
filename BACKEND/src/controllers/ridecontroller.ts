@@ -2,10 +2,19 @@ import { Request, Response } from "express";
 import User from "../models/user.js";
 import Driver from "../models/driver.js";
 import Ride from "../models/ride.js";
+import crypto from "crypto";
+import { success } from "zod";
 
 // @desc    Create new ride
 // @route   POST /api/rides
 // @access  Public
+
+const generateOTP = () => {
+    return crypto.randomInt(100000, 999999).toString();
+     
+} 
+const otp = generateOTP();
+ 
 
 export const createRide = async (
      req : Request,
@@ -275,4 +284,48 @@ export const deleteRide = async(
     }
 };
 
+// verify otp
+
+export const verifyRideOTP = async(
+      req : Request,
+      res : Response,
+): Promise<Response> => {
+      try {
+         const { rideId, otp } = req.body;
+         const ride = await Ride.findById(rideId);
+         if(!ride){
+              return res.status(404).json({
+                 success : false,
+                 message : "Ride Not Found",
+              });
+         } 
+         if(ride.otp != otp){
+             return res.status(400).json({
+                 success : false,
+                 message : "Invalid OTP",
+             });
+         }
+         if(ride.ride_status !== "accepted"){
+             return res.status(400).json({
+                 success : false,
+                 message : "Ride not accepted yet",
+             });
+         }
+         ride.ride_status = "ongoing";
+         await ride.save();
+
+         return res.json({
+             success : true,
+             message : "OTP verified , ride started",
+         });
+
+      } catch (error) {
+          console.log("OTP Verification Erro", error);
+           
+          return res.status(500).json({
+             success : false,
+             message : "Internal server error",
+          });
+      }
+};
 
